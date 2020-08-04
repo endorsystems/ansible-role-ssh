@@ -1,0 +1,16 @@
+---
+- name: Add SSH public key(s)
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', 'files/linux-default.pub') }}"
+
+- name: Update SSH config file
+  copy:
+    src: files/sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+  notify: restart sshd
